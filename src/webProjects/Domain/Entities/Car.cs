@@ -18,7 +18,7 @@ public class Car : BaseEntity<Guid>
         CarImages = new HashSet<CarImage>();
     }
 
-    public Car(Guid id, Guid modelId, int modelYear, string plate, int state, double dailyPrice)
+    public Car(Guid id, Guid modelId, int modelYear, string plate, int state, double dailyPrice) : this()
     {
         Id = id;
         ModelId = modelId;

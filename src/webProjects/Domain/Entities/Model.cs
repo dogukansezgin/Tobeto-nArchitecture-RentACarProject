@@ -15,7 +15,7 @@ public class Model : BaseEntity<Guid>
         Cars = new HashSet<Car>();
     }
 
-    public Model(Guid id, Guid brandId, string name)
+    public Model(Guid id, Guid brandId, string name) : this()
     {
         Id = id;
         BrandId = brandId;

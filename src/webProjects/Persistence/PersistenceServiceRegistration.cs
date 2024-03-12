@@ -1,9 +1,11 @@
 ﻿using Application.Services.Repositories;
+using Core.CrossCuttingConcerns.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Contexts;
 using Persistence.Repositories;
+using System.Reflection;
 
 namespace Persistence;
 
@@ -13,7 +15,8 @@ public static class PersistenceServiceRegistration
     {
         services.AddDbContext<BaseDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("nArcRentACarConnectionString")));
 
-        services.AddScoped<IBrandRepository, BrandRepository>();
+        services.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+            .Where(t => t.ServiceType.Name.EndsWith("Repository"));
 
         return services;
     }

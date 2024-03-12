@@ -13,7 +13,7 @@ public class Brand : BaseEntity<Guid>
         Models = new HashSet<Model>();
     }
 
-    public Brand(Guid id, string name)
+    public Brand(Guid id, string name) : this()
     {
         Id = id;
         Name = name;

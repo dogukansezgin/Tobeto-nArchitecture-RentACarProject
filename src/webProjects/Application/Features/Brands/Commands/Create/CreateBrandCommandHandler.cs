@@ -1,4 +1,5 @@
 ﻿using Application.Features.Brands.Dtos;
+using Application.Features.Brands.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
 using Domain.Entities;
@@ -10,17 +11,22 @@ public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, Cre
 {
     private readonly IBrandRepository _brandRepository;
     private readonly IMapper _mapper;
-    public CreateBrandCommandHandler(IBrandRepository brandRepository, IMapper mapper)
+    private readonly BrandBusinessRules _brandBusinessRules;
+
+    public CreateBrandCommandHandler(IBrandRepository brandRepository, IMapper mapper, BrandBusinessRules brandBusinessRules)
     {
         _brandRepository = brandRepository;
         _mapper = mapper;
+        _brandBusinessRules = brandBusinessRules;
     }
 
     public async Task<CreatedBrandResponse> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
     {
-        Brand mappedBrand = _mapper.Map<Brand>(request);
-        Brand createdBrand = await _brandRepository.AddAsync(mappedBrand);
-        CreatedBrandResponse createdBrandResponse = _mapper.Map<CreatedBrandResponse>(createdBrand);
+        await _brandBusinessRules.BrandNameShouldNotExist(request.Name);
+
+        Brand brand = _mapper.Map<Brand>(request);
+        await _brandRepository.AddAsync(brand);
+        CreatedBrandResponse createdBrandResponse = _mapper.Map<CreatedBrandResponse>(brand);
         return createdBrandResponse;
     }
 }

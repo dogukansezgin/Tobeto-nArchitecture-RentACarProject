@@ -8,4 +8,16 @@ public class BaseEntity<TId>
     public DateTime UpdatedDate { get; set; }
     public DateTime DeletedDate { get; set; }
 
+    public BaseEntity()
+    {
+        
+    }
+
+    public BaseEntity(TId ıd, DateTime createdDate, DateTime updatedDate, DateTime deletedDate) : this()
+    {
+        Id = ıd;
+        CreatedDate = createdDate;
+        UpdatedDate = updatedDate;
+        DeletedDate = deletedDate;
+    }
 }
