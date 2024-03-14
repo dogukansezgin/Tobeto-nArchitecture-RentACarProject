@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Brands.Queries.GetById;
 
-public class GetByIdBrandCommand : IRequest<GetListBrandResponse>
+public class GetByIdBrandQuery : IRequest<GetListBrandResponse>
 {
     public Guid Id { get; set; }
 }

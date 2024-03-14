@@ -23,7 +23,7 @@ public class MappingProfiles : Profile
 
         CreateMap<Brand, GetListBrandResponse>().ReverseMap();
 
-        CreateMap<Brand, GetByIdBrandCommand>().ReverseMap();
+        CreateMap<Brand, GetByIdBrandQuery>().ReverseMap();
 
     }
 }

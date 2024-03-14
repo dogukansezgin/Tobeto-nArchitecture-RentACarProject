@@ -34,13 +34,13 @@ namespace WebAPI.Controllers
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll()
         {
-            return Created("", await Mediator.Send(new GetAllBrandCommand()));
+            return Created("", await Mediator.Send(new GetAllBrandQuery()));
         }
 
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
-            return Created("", await Mediator.Send(new GetByIdBrandCommand { Id = id }));
+            return Created("", await Mediator.Send(new GetByIdBrandQuery { Id = id }));
         }
 
     }

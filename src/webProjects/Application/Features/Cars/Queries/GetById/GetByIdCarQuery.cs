@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.Features.Cars.Queries.GetById;
 
-public class GetByIdCarCommand : IRequest<GetListCarResponse>
+public class GetByIdCarQuery : IRequest<GetListCarResponse>
 {
     public Guid Id { get; set; }
 }

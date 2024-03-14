@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Models.Queries.GetById;
 
-public class GetByIdModelCommand : IRequest<GetListModelResponse>
+public class GetByIdModelQuery : IRequest<GetListModelResponse>
 {
     public Guid Id { get; set; }
 }

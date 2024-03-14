@@ -6,21 +6,21 @@ using MediatR;
 
 namespace Application.Features.Brands.Queries.GetAll;
 
-public class GetAllBrandCommand : IRequest<List<GetListBrandResponse>>
+public class GetAllBrandQuery : IRequest<List<GetListBrandResponse>>
 {
 
-    public class GetAllBrandCommandHandler : IRequestHandler<GetAllBrandCommand, List<GetListBrandResponse>>
+    public class GetAllBrandCommandQuery : IRequestHandler<GetAllBrandQuery, List<GetListBrandResponse>>
     {
         private readonly IBrandRepository _brandRepository;
         private readonly IMapper _mapper;
 
-        public GetAllBrandCommandHandler(IBrandRepository brandRepository, IMapper mapper)
+        public GetAllBrandCommandQuery(IBrandRepository brandRepository, IMapper mapper)
         {
             _brandRepository = brandRepository;
             _mapper = mapper;
         }
 
-        public async Task<List<GetListBrandResponse>> Handle(GetAllBrandCommand request, CancellationToken cancellationToken)
+        public async Task<List<GetListBrandResponse>> Handle(GetAllBrandQuery request, CancellationToken cancellationToken)
         {
             List<Brand> brands = await _brandRepository.GetAllAsync();
             List<GetListBrandResponse> getListBrandResponses = _mapper.Map<List<GetListBrandResponse>>(brands);

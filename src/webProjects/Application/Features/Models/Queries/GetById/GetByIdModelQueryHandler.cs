@@ -8,20 +8,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Models.Queries.GetById;
 
-public class GetByIdModelCommandHandler : IRequestHandler<GetByIdModelCommand, GetListModelResponse>
+public class GetByIdModelQueryHandler : IRequestHandler<GetByIdModelQuery, GetListModelResponse>
 {
     private readonly IModelRepository _modelRepository;
     private readonly IMapper _mapper;
     private readonly ModelBusinessRules _modelBusinessRules;
 
-    public GetByIdModelCommandHandler(IModelRepository modelRepository, IMapper mapper, ModelBusinessRules modelBusinessRules)
+    public GetByIdModelQueryHandler(IModelRepository modelRepository, IMapper mapper, ModelBusinessRules modelBusinessRules)
     {
         _modelRepository = modelRepository;
         _mapper = mapper;
         _modelBusinessRules = modelBusinessRules;
     }
 
-    public async Task<GetListModelResponse> Handle(GetByIdModelCommand request, CancellationToken cancellationToken)
+    public async Task<GetListModelResponse> Handle(GetByIdModelQuery request, CancellationToken cancellationToken)
     {
         await _modelBusinessRules.ModelShouldBeExist(request.Id);
 

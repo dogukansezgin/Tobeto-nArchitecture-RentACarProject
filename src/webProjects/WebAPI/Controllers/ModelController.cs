@@ -32,13 +32,13 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Created("", await Mediator.Send(new GetAllModelCommand()));
+            return Created("", await Mediator.Send(new GetAllModelQuery()));
         }
 
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
-            return Created("", await Mediator.Send(new GetByIdModelCommand { Id = id }));
+            return Created("", await Mediator.Send(new GetByIdModelQuery { Id = id }));
         }
     }
 }

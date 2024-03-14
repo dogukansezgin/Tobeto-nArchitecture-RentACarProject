@@ -7,20 +7,20 @@ using MediatR;
 
 namespace Application.Features.Brands.Queries.GetById;
 
-public class GetByIdBrandCommandHandler : IRequestHandler<GetByIdBrandCommand, GetListBrandResponse>
+public class GetByIdBrandQueryHandler : IRequestHandler<GetByIdBrandQuery, GetListBrandResponse>
 {
     private readonly IBrandRepository _brandRepository;
     private readonly IMapper _mapper;
     private readonly BrandBusinessRules _brandBusinessRules;
 
-    public GetByIdBrandCommandHandler(IBrandRepository brandRepository, IMapper mapper, BrandBusinessRules brandBusinessRules)
+    public GetByIdBrandQueryHandler(IBrandRepository brandRepository, IMapper mapper, BrandBusinessRules brandBusinessRules)
     {
         _brandRepository = brandRepository;
         _mapper = mapper;
         _brandBusinessRules = brandBusinessRules;
     }
 
-    public async Task<GetListBrandResponse> Handle(GetByIdBrandCommand request, CancellationToken cancellationToken)
+    public async Task<GetListBrandResponse> Handle(GetByIdBrandQuery request, CancellationToken cancellationToken)
     {
         await _brandBusinessRules.BrandShouldBeExist(request.Id);
 

@@ -23,7 +23,7 @@ public class MappingProfiles : Profile
 
         CreateMap<Car, GetListCarResponse>().ReverseMap();
 
-        CreateMap<Car, GetByIdCarCommand>().ReverseMap();
+        CreateMap<Car, GetByIdCarQuery>().ReverseMap();
 
     }
 }

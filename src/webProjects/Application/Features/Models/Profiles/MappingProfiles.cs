@@ -23,7 +23,7 @@ public class MappingProfiles : Profile
 
         CreateMap<Model, GetListModelResponse>().ReverseMap();
 
-        CreateMap<Model, GetByIdModelCommand>().ReverseMap();
+        CreateMap<Model, GetByIdModelQuery>().ReverseMap();
 
     }
 }
