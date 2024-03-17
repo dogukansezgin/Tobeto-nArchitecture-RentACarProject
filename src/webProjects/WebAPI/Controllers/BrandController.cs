@@ -1,10 +1,13 @@
 ﻿using Application.Features.Brands.Commands.Create;
 using Application.Features.Brands.Commands.Delete;
 using Application.Features.Brands.Commands.Update;
-using Application.Features.Brands.Dtos;
+using Application.Features.Brands.Models;
 using Application.Features.Brands.Queries.GetAll;
+using Application.Features.Brands.Queries.GetAllDynamic;
+using Application.Features.Brands.Queries.GetAllPagination;
 using Application.Features.Brands.Queries.GetById;
-using Microsoft.AspNetCore.Http;
+using Core.Application.Requests;
+using Core.Persistence.Dynamic;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -35,6 +38,22 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetAll()
         {
             return Created("", await Mediator.Send(new GetAllBrandQuery()));
+        }
+
+        [HttpGet("GetAllPagination")]
+        public async Task<IActionResult> GetAllPagination([FromQuery] PageRequest pageRequest)
+        {
+            GetAllPaginationBrandQuery query = new() { PageRequest = pageRequest };
+            BrandListModel result = await Mediator.Send(query);
+            return Created("", result);
+        }
+
+        [HttpPost("GetAllDynamic")]
+        public async Task<IActionResult> GetAllDynamic([FromQuery] PageRequest pageRequest, [FromBody] Dynamic dynamic)
+        {
+            GetAllDynamicBrandQuery query = new() { PageRequest = pageRequest, Dynamic = dynamic };
+            BrandListModel result = await Mediator.Send(query);
+            return Created("", result);
         }
 
         [HttpGet("GetById/{id}")]
