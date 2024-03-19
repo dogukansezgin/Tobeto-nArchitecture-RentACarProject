@@ -13,8 +13,8 @@ public class ModelConfiguration : IEntityTypeConfiguration<Model>
         builder.Property(x => x.BrandId).HasColumnName("BrandId");
         builder.Property(x => x.Name).HasColumnName("Name");
         builder.Property(x => x.CreatedDate).HasColumnName("CreatedDate");
-        builder.Property(x => x.UpdatedDate).HasColumnName("UpdatedDate");
-        builder.Property(x => x.DeletedDate).HasColumnName("DeletedDate");
+        builder.Property(x => x.UpdatedDate).HasColumnName("UpdatedDate").IsRequired(false);
+        builder.Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsRequired(false);
 
         builder.HasOne(x => x.Brand);
         builder.HasMany(x => x.Cars);

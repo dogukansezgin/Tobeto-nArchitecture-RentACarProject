@@ -25,7 +25,7 @@ public class DeleteModelCommandHandler : IRequestHandler<DeleteModelCommand, Del
         await _modelBusinessRules.ModelShouldBeExist(request.Id);
 
         Model deletedModel = await _modelRepository.GetAsync(x => x.Id ==  request.Id);
-        await _modelRepository.DeleteAsync(deletedModel);
+        await _modelRepository.DeleteAsync(deletedModel, request.IsPermament);
         DeleteModelResponse response = _mapper.Map<DeleteModelResponse>(deletedModel);
         return response;
     }

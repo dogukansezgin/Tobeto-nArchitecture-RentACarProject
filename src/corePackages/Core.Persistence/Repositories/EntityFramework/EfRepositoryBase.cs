@@ -1,8 +1,11 @@
 ﻿using Core.Persistence.Dynamic;
 using Core.Persistence.Paging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Query;
+using System.Collections;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Core.Persistence.Repositories.EntityFramework;
 
@@ -27,10 +30,9 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<T
         return entity;
     }
 
-    public async Task<TEntity> DeleteAsync(TEntity entity)
+    public async Task<TEntity> DeleteAsync(TEntity entity, bool permament = false)
     {
-        entity.DeletedDate = DateTime.UtcNow;
-        Context.Remove(entity);
+        await SetEntityAsDeletedAsync(entity, permament);
         await Context.SaveChangesAsync();
         return entity;
     }
@@ -88,4 +90,98 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<T
     }
 
 
+
+    protected async Task SetEntityAsDeletedAsync(TEntity entity, bool permanent)
+    {
+        if (!permanent)
+        {
+            CheckHasEntityHaveOneToOneRelation(entity);
+            await SetEntityAsSoftDeletedAsync(entity);
+        }
+        else
+            Context.Remove(entity);
+    }
+
+    protected IQueryable<object> GetRelationLoaderQuery(IQueryable query, Type navigationPropertyType)
+    {
+        Type queryProviderType = query.Provider.GetType();
+        MethodInfo createQueryMethod =
+            queryProviderType
+                .GetMethods()
+                .First(m => m is { Name: nameof(query.Provider.CreateQuery), IsGenericMethod: true })
+                ?.MakeGenericMethod(navigationPropertyType)
+            ?? throw new InvalidOperationException("CreateQuery<TElement> method is not found in IQueryProvider.");
+        var queryProviderQuery =
+            (IQueryable<object>)createQueryMethod.Invoke(query.Provider, parameters: new object[] { query.Expression })!;
+        return queryProviderQuery.Where(x => !((IEntityTimestamps)x).DeletedDate.HasValue);
+    }
+
+    protected void CheckHasEntityHaveOneToOneRelation(TEntity entity)
+    {
+        IEnumerable<IForeignKey> foreignKeys = Context.Entry(entity).Metadata.GetForeignKeys();
+        bool hasEntityHaveOneToOneRelation =
+            foreignKeys.Any()
+            && foreignKeys.All(x =>
+                x.DependentToPrincipal?.IsCollection == true
+                || x.PrincipalToDependent?.IsCollection == true
+                || x.DependentToPrincipal?.ForeignKey.DeclaringEntityType.ClrType == entity.GetType()
+            );
+        if (hasEntityHaveOneToOneRelation)
+            throw new InvalidOperationException(
+                "Entity has one-to-one relationship. Soft Delete causes problems if you try to create entry again by same foreign key."
+            );
+    }
+
+    private async Task SetEntityAsSoftDeletedAsync(IEntityTimestamps entity)
+    {
+        if (entity.DeletedDate.HasValue)
+            return;
+        entity.DeletedDate = DateTime.UtcNow;
+
+        var navigations = Context
+            .Entry(entity)
+            .Metadata.GetNavigations()
+            .Where(x =>
+                x is { IsOnDependent: false, ForeignKey.DeleteBehavior: DeleteBehavior.ClientCascade or DeleteBehavior.Cascade }
+            )
+            .ToList();
+        foreach (INavigation? navigation in navigations)
+        {
+            if (navigation.TargetEntityType.IsOwned())
+                continue;
+            if (navigation.PropertyInfo == null)
+                continue;
+
+            object? navValue = navigation.PropertyInfo.GetValue(entity);
+            if (navigation.IsCollection)
+            {
+                if (navValue == null)
+                {
+                    IQueryable query = Context.Entry(entity).Collection(navigation.PropertyInfo.Name).Query();
+                    navValue = await GetRelationLoaderQuery(query, navigationPropertyType: navigation.PropertyInfo.GetType())
+                        .ToListAsync();
+                    if (navValue == null)
+                        continue;
+                }
+
+                foreach (IEntityTimestamps navValueItem in (IEnumerable)navValue)
+                    await SetEntityAsSoftDeletedAsync(navValueItem);
+            }
+            else
+            {
+                if (navValue == null)
+                {
+                    IQueryable query = Context.Entry(entity).Reference(navigation.PropertyInfo.Name).Query();
+                    navValue = await GetRelationLoaderQuery(query, navigationPropertyType: navigation.PropertyInfo.GetType())
+                        .FirstOrDefaultAsync();
+                    if (navValue == null)
+                        continue;
+                }
+
+                await SetEntityAsSoftDeletedAsync((IEntityTimestamps)navValue);
+            }
+        }
+
+        Context.Update(entity);
+    }
 }

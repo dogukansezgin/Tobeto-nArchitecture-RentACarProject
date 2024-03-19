@@ -9,6 +9,7 @@ namespace Application.Features.Cars.Commands.Delete;
 public class DeleteCarCommand : IRequest<DeleteCarResponse>, IIntervalRequest, ILoggableRequest, ICacheRemoverRequest
 {
     public Guid Id { get; set; }
+    public bool IsPermament { get; set; }
 
     public int Interval => 1;
 

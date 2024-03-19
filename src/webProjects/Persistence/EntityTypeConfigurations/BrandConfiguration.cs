@@ -12,8 +12,8 @@ public class BrandConfiguration : IEntityTypeConfiguration<Brand>
         builder.Property(x => x.Id).HasColumnName("Id");
         builder.Property(x => x.Name).HasColumnName("Name");
         builder.Property(x => x.CreatedDate).HasColumnName("CreatedDate");
-        builder.Property(x => x.UpdatedDate).HasColumnName("UpdatedDate");
-        builder.Property(x => x.DeletedDate).HasColumnName("DeletedDate");
+        builder.Property(x => x.UpdatedDate).HasColumnName("UpdatedDate").IsRequired(false);
+        builder.Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsRequired(false);
 
         builder.HasMany(x => x.Models);
     }

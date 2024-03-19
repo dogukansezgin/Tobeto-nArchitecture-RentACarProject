@@ -25,7 +25,7 @@ public class DeleteCarCommandHandler : IRequestHandler<DeleteCarCommand, DeleteC
         await _carBusinessRules.CarShouldBeExist(request.Id);
 
         Car deletedCar = await _carRepository.GetAsync(x => x.Id == request.Id);
-        await _carRepository.DeleteAsync(deletedCar);
+        await _carRepository.DeleteAsync(deletedCar, request.IsPermament);
         DeleteCarResponse deleteCarResponse = _mapper.Map<DeleteCarResponse>(deletedCar);
         return deleteCarResponse;
     }

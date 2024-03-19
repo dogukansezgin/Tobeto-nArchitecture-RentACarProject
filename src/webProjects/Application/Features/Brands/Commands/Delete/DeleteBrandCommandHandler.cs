@@ -25,7 +25,7 @@ public class DeleteBrandCommandHandler : IRequestHandler<DeleteBrandCommand, Del
         await _brandBusinessRules.BrandShouldBeExist(request.Id);
 
         Brand deletedBrand = await _brandRepository.GetAsync(x => x.Id == request.Id);
-        await _brandRepository.DeleteAsync(deletedBrand);
+        await _brandRepository.DeleteAsync(deletedBrand, request.IsPermament);
         DeletedBrandResponse deletedBrandResponse = _mapper.Map<DeletedBrandResponse>(deletedBrand);
         return deletedBrandResponse;
     }
