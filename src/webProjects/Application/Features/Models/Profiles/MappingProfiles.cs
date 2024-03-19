@@ -2,8 +2,10 @@
 using Application.Features.Models.Commands.Delete;
 using Application.Features.Models.Commands.Update;
 using Application.Features.Models.Dtos;
+using Application.Features.Models.Models;
 using Application.Features.Models.Queries.GetById;
 using AutoMapper;
+using Core.Persistence.Paging;
 using Domain.Entities;
 
 namespace Application.Features.Models.Profiles;
@@ -24,6 +26,8 @@ public class MappingProfiles : Profile
         CreateMap<Model, GetListModelResponse>().ReverseMap();
 
         CreateMap<Model, GetByIdModelQuery>().ReverseMap();
+
+        CreateMap<IPaginate<Model>, ModelListModel>().ReverseMap(); 
 
     }
 }

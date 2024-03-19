@@ -2,7 +2,6 @@
 using Core.Persistence.Paging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
-using System;
 using System.Linq.Expressions;
 
 namespace Core.Persistence.Repositories.EntityFramework;
@@ -87,4 +86,6 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<T
             queryable = include(queryable);
         return await queryable.ToPaginateAsync(index, size, 0, cancellationToken);
     }
+
+
 }

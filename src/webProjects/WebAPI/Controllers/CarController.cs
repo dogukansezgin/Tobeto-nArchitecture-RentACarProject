@@ -1,8 +1,13 @@
 ﻿using Application.Features.Cars.Commands.Create;
 using Application.Features.Cars.Commands.Delete;
 using Application.Features.Cars.Commands.Update;
+using Application.Features.Cars.Models;
 using Application.Features.Cars.Queries.GetAll;
+using Application.Features.Cars.Queries.GetAllDynamic;
+using Application.Features.Cars.Queries.GetAllPagination;
 using Application.Features.Cars.Queries.GetById;
+using Core.Application.Requests;
+using Core.Persistence.Dynamic;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -33,6 +38,22 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetAll()
         {
             return Created("", await Mediator.Send(new GetAllCarQuery()));
+        }
+
+        [HttpGet("GetAllPagination")]
+        public async Task<IActionResult> GetAllPagination([FromQuery] PageRequest pageRequest)
+        {
+            GetAllPaginationCarQuery query = new() { PageRequest = pageRequest };
+            CarListModel result = await Mediator.Send(query);
+            return Created("", result);
+        }
+
+        [HttpPost("GetAllDynamic")]
+        public async Task<IActionResult> GetAllDynamic([FromQuery] PageRequest pageRequest, [FromBody] Dynamic dynamic)
+        {
+            GetAllDynamicCarQuery query = new() { PageRequest = pageRequest, Dynamic = dynamic };
+            CarListModel result = await Mediator.Send(query);
+            return Created("", result);
         }
 
         [HttpGet("GetById/{id}")]

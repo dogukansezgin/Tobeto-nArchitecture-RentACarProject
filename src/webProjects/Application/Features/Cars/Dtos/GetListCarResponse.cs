@@ -3,6 +3,8 @@
 public class GetListCarResponse
 {
     public Guid Id { get; set; }
+    public Guid ModelBrandId { get; set; }
+    public string ModelBrandName { get; set; }
     public Guid ModelId { get; set; }
     public string ModelName { get; set; }
     public int ModelYear { get; set; }

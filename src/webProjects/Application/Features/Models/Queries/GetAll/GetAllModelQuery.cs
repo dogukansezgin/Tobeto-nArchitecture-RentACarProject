@@ -2,26 +2,30 @@
 using Application.Features.Models.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Caching;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Models.Queries.GetAll;
 
-public class GetAllModelQuery : IRequest<List<GetListModelResponse>>
+public class GetAllModelQuery : IRequest<List<GetListModelResponse>>, ICachableRequest
 {
+    public bool BypassCache { get; }
+
+    public string CacheKey => "model-list";
+
+    public TimeSpan? SlidingExpiration { get; }
 
     public class GetAllModelQueryHandler : IRequestHandler<GetAllModelQuery, List<GetListModelResponse>>
     {
         private readonly IModelRepository _modelRepository;
         private readonly IMapper _mapper;
-        private readonly ModelBusinessRules _modelBusinessRules;
 
-        public GetAllModelQueryHandler(IModelRepository modelRepository, IMapper mapper, ModelBusinessRules modelBusinessRules)
+        public GetAllModelQueryHandler(IModelRepository modelRepository, IMapper mapper)
         {
             _modelRepository = modelRepository;
             _mapper = mapper;
-            _modelBusinessRules = modelBusinessRules;
         }
 
         public async Task<List<GetListModelResponse>> Handle(GetAllModelQuery request, CancellationToken cancellationToken)
