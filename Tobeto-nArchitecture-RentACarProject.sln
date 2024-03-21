@@ -21,9 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "src\webPr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "src\webProjects\WebAPI\WebAPI.csproj", "{D6F7755A-FDB4-409E-A939-CFC1A89AE533}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Application", "src\corePackages\Core.Application\Core.Application.csproj", "{F3FDA2E2-696F-4557-81CB-B1E4D9A65E83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Application", "src\corePackages\Core.Application\Core.Application.csproj", "{F3FDA2E2-696F-4557-81CB-B1E4D9A65E83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.CrossCuttingConcerns", "src\corePackages\Core.CrossCuttingConcerns\Core.CrossCuttingConcerns.csproj", "{CAD6EF99-2F44-4779-8AE1-1C894203A462}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.CrossCuttingConcerns", "src\corePackages\Core.CrossCuttingConcerns\Core.CrossCuttingConcerns.csproj", "{CAD6EF99-2F44-4779-8AE1-1C894203A462}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Security", "src\corePackages\Core.Security\Core.Security.csproj", "{DABB8CB3-B869-4A26-9E0A-1D793560EC4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{CAD6EF99-2F44-4779-8AE1-1C894203A462}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAD6EF99-2F44-4779-8AE1-1C894203A462}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAD6EF99-2F44-4779-8AE1-1C894203A462}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DABB8CB3-B869-4A26-9E0A-1D793560EC4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DABB8CB3-B869-4A26-9E0A-1D793560EC4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DABB8CB3-B869-4A26-9E0A-1D793560EC4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DABB8CB3-B869-4A26-9E0A-1D793560EC4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +84,7 @@ Global
 		{D6F7755A-FDB4-409E-A939-CFC1A89AE533} = {E51B227B-BDD8-4AA6-B357-A1C489D39A0B}
 		{F3FDA2E2-696F-4557-81CB-B1E4D9A65E83} = {47C03FC9-9C39-4B59-92EA-FA360F31CBE6}
 		{CAD6EF99-2F44-4779-8AE1-1C894203A462} = {47C03FC9-9C39-4B59-92EA-FA360F31CBE6}
+		{DABB8CB3-B869-4A26-9E0A-1D793560EC4C} = {47C03FC9-9C39-4B59-92EA-FA360F31CBE6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BF1BADB6-8062-4074-AAD5-E13F445E5EF6}

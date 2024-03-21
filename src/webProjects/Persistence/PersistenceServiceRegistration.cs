@@ -1,10 +1,8 @@
-﻿using Application.Services.Repositories;
-using Core.CrossCuttingConcerns.Extensions;
+﻿using Core.CrossCuttingConcerns.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Contexts;
-using Persistence.Repositories;
 using System.Reflection;
 
 namespace Persistence;
