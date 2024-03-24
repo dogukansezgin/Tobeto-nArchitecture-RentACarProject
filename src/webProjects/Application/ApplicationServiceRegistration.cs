@@ -32,7 +32,6 @@ public static class ApplicationServiceRegistration
 
         services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
 
-        services.AddScoped<ICarImageService, CarImageManager>();
         services.AddScoped<IUserService, UserManager>();
         services.AddScoped<IAuthService, AuthManager>();
 
